@@ -1305,11 +1305,11 @@ func (a *Association) handleData(d *chunkPayloadData) []*packet {
 			// Receive buffer is full
 			lastTSN, ok := a.payloadQueue.getLastTSNReceived()
 			if ok && sna32LT(d.tsn, lastTSN) {
-				a.log.Debugf("[%s] receive buffer full, but accepted as this is a missing chunk with tsn=%d ssn=%d", a.name, d.tsn, d.streamSequenceNumber)
+				a.log.Errorf("[%s] receive buffer full, but accepted as this is a missing chunk with tsn=%d ssn=%d %d", a.name, d.tsn, d.streamSequenceNumber, d.streamIdentifier)
 				a.payloadQueue.push(d, a.peerLastTSN)
 				s.handleData(d)
 			} else {
-				a.log.Debugf("[%s] receive buffer full. dropping DATA with tsn=%d ssn=%d", a.name, d.tsn, d.streamSequenceNumber)
+				a.log.Errorf("[%s] receive buffer full. dropping DATA with tsn=%d ssn=%d %d", a.name, d.tsn, d.streamSequenceNumber, d.streamIdentifier)
 			}
 		}
 	}
