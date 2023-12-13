@@ -449,6 +449,13 @@ func (s *Stream) onInboundStreamReset() {
 	//	outgoing stream.  When the peer sees that an incoming stream was
 	//	reset, it also resets its corresponding outgoing stream.  Once this
 	//	is completed, the data channel is closed.
+	buf := make([]byte, 1<<16)
+	for {
+		_, _, err := s.reassemblyQueue.read(buf)
+		if err != nil {
+			break
+		}
+	}
 
 	s.readErr = io.EOF
 	s.readNotifier.Broadcast()
