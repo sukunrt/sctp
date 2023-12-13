@@ -2051,6 +2051,7 @@ func (a *Association) resetStreamsIfAny(p *paramOutgoingResetRequest) *packet {
 			}
 			a.lock.Unlock()
 			s.onInboundStreamReset()
+			s.Close()
 			a.lock.Lock()
 			a.log.Debugf("[%s] deleting stream %d", a.name, id)
 			delete(a.streams, s.streamIdentifier)

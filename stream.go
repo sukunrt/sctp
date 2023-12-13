@@ -267,7 +267,6 @@ func (s *Stream) WriteSCTP(p []byte, ppi PayloadProtocolIdentifier) (int, error)
 	if s.State() != StreamStateOpen {
 		return 0, ErrStreamClosed
 	}
-
 	chunks := s.packetize(p, ppi)
 	n := len(p)
 	err := s.association.sendPayloadData(chunks)
