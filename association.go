@@ -92,7 +92,7 @@ const (
 
 // other constants
 const (
-	acceptChSize = 16
+	acceptChSize = 256
 )
 
 func getAssociationStateString(a uint32) string {
@@ -1408,11 +1408,11 @@ func (a *Association) createStream(streamIdentifier uint16, accept bool) *Stream
 		select {
 		case a.acceptCh <- s:
 			a.streams[streamIdentifier] = s
-			a.log.Debugf("[%s] accepted a new stream (streamIdentifier: %d)",
+			a.log.Errorf("[%s] accepted a new stream (streamIdentifier: %d)",
 				a.name, streamIdentifier)
 		default:
-			a.log.Debugf("[%s] dropped a new stream (acceptCh size: %d)",
-				a.name, len(a.acceptCh))
+			a.log.Errorf("[%s] dropped a new stream (streamIdentifier: %d) (acceptCh size: %d)",
+				a.name, streamIdentifier, len(a.acceptCh))
 			return nil
 		}
 	} else {
